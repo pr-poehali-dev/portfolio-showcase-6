@@ -1,7 +1,6 @@
-
-import React, { useRef, useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import Icon from '@/components/ui/icon';
+import React, { useRef, useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import Icon from "@/components/ui/icon";
 
 interface ExperienceItem {
   period: string;
@@ -14,44 +13,57 @@ interface ExperienceItem {
 
 const experiences: ExperienceItem[] = [
   {
-    period: '2022 — настоящее время',
-    title: 'Старший UI/UX дизайнер',
-    company: 'Digital Solutions',
-    description: 'Руководство командой дизайнеров, разработка дизайн-систем и создание UX-стратегии для крупных корпоративных проектов.',
-    skills: ['Figma', 'Adobe Creative Suite', 'Design Systems', 'User Research'],
-    icon: 'Palette'
+    period: "2022 — настоящее время",
+    title: "Старший библиотекарь",
+    company: "Национальная библиотека",
+    description:
+      "Руководство отделом редких книг и рукописей, курирование выставок и создание цифровых копий исторических документов.",
+    skills: [
+      "Архивирование",
+      "Реставрация",
+      "Цифровизация",
+      "Исследовательская работа",
+    ],
+    icon: "BookOpen",
   },
   {
-    period: '2020 — 2022',
-    title: 'Frontend-разработчик',
-    company: 'Tech Innovations',
-    description: 'Разработка высоконагруженных веб-приложений с использованием современных технологий и фреймворков.',
-    skills: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS'],
-    icon: 'Code'
+    period: "2020 — 2022",
+    title: "Редактор электронных изданий",
+    company: 'Издательский дом "Литера"',
+    description:
+      "Разработка электронных версий книг с интерактивными элементами и оптимизация для различных устройств чтения.",
+    skills: ["Вёрстка", "TypeScript", "E-Publishing", "Типографика"],
+    icon: "Edit",
   },
   {
-    period: '2018 — 2020',
-    title: 'UI дизайнер',
-    company: 'Creative Agency',
-    description: 'Создание интерфейсов для мобильных приложений и веб-сайтов, работа с клиентами и разработчиками.',
-    skills: ['Sketch', 'Prototyping', 'UI Design', 'Wireframing'],
-    icon: 'Layers'
+    period: "2018 — 2020",
+    title: "Шрифтовой дизайнер",
+    company: 'Студия "Буквица"',
+    description:
+      "Создание оригинальных кириллических шрифтов для цифровых изданий и фирменных стилей компаний.",
+    skills: [
+      "Типографика",
+      "Каллиграфия",
+      "Шрифтовой дизайн",
+      "Adobe Creative Suite",
+    ],
+    icon: "Type",
   },
 ];
 
 const skills = [
-  { name: 'UI/UX Design', level: 95 },
-  { name: 'Frontend Development', level: 90 },
-  { name: 'React/Next.js', level: 88 },
-  { name: 'Figma/Adobe XD', level: 95 },
-  { name: 'UX Research', level: 85 },
-  { name: 'Design Systems', level: 92 },
+  { name: "Оцифровка редких изданий", level: 95 },
+  { name: "Разработка электронных книг", level: 90 },
+  { name: "Каллиграфия", level: 88 },
+  { name: "Реставрация документов", level: 95 },
+  { name: "Исследование рукописей", level: 85 },
+  { name: "Шрифтовой дизайн", level: 92 },
 ];
 
 const Experience = () => {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -59,61 +71,63 @@ const Experience = () => {
           const timeoutIds: NodeJS.Timeout[] = [];
           experiences.forEach((_, index) => {
             const timeoutId = setTimeout(() => {
-              setVisibleItems(prev => [...prev, index]);
+              setVisibleItems((prev) => [...prev, index]);
             }, 300 * index);
             timeoutIds.push(timeoutId);
           });
-          
+
           return () => {
-            timeoutIds.forEach(id => clearTimeout(id));
+            timeoutIds.forEach((id) => clearTimeout(id));
           };
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
-    
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-    
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-  
+
   return (
     <section id="experience" className="py-20 bg-muted" ref={sectionRef}>
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">Мой профессиональный путь</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-playfair">
+            Мой профессиональный путь
+          </h2>
           <p className="text-foreground/70 text-lg">
             Опыт, навыки и профессиональный рост в сфере дизайна и разработки
           </p>
         </div>
-        
+
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <div className="space-y-8">
             <h3 className="text-2xl font-bold mb-6 inline-flex items-center gap-2">
               <Icon name="Briefcase" className="text-primary" />
               Опыт работы
             </h3>
-            
+
             <div className="relative pl-6 border-l-2 border-primary/30 space-y-10">
               {experiences.map((job, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`relative transition-all duration-700 ${
-                    visibleItems.includes(index) 
-                      ? 'opacity-100 translate-x-0' 
-                      : 'opacity-0 -translate-x-8'
+                    visibleItems.includes(index)
+                      ? "opacity-100 translate-x-0"
+                      : "opacity-0 -translate-x-8"
                   }`}
                 >
                   <div className="absolute -left-[29px] bg-background rounded-full p-1 border-2 border-primary">
                     <Icon name={job.icon} size={16} className="text-primary" />
                   </div>
-                  
+
                   <div className="bg-background rounded-lg shadow-sm p-6 card-hover">
                     <span className="text-sm font-medium text-primary/80 block mb-2">
                       {job.period}
@@ -122,13 +136,11 @@ const Experience = () => {
                     <p className="text-accent font-medium text-sm mb-3">
                       {job.company}
                     </p>
-                    <p className="text-foreground/70 mb-4">
-                      {job.description}
-                    </p>
+                    <p className="text-foreground/70 mb-4">{job.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {job.skills.map((skill, i) => (
-                        <span 
-                          key={i} 
+                        <span
+                          key={i}
                           className="bg-muted px-3 py-1 rounded-full text-xs font-medium"
                         >
                           {skill}
@@ -140,26 +152,29 @@ const Experience = () => {
               ))}
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-2xl font-bold mb-6 inline-flex items-center gap-2">
               <Icon name="BarChart3" className="text-primary" />
               Навыки и технологии
             </h3>
-            
+
             <Card className="shadow-sm">
               <CardContent className="p-6 space-y-6">
                 {skills.map((skill, index) => (
                   <div key={index} className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="font-medium">{skill.name}</span>
-                      <span className="text-sm text-foreground/70">{skill.level}%</span>
+                      <span className="text-sm text-foreground/70">
+                        {skill.level}%
+                      </span>
                     </div>
                     <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
-                        style={{ 
-                          width: visibleItems.length > 0 ? `${skill.level}%` : '0%' 
+                        style={{
+                          width:
+                            visibleItems.length > 0 ? `${skill.level}%` : "0%",
                         }}
                       />
                     </div>
@@ -167,7 +182,7 @@ const Experience = () => {
                 ))}
               </CardContent>
             </Card>
-            
+
             <div className="grid grid-cols-2 gap-4 mt-6">
               <Card className="bg-background/50 shadow-sm card-hover">
                 <CardContent className="p-6 flex flex-col items-center text-center">
@@ -182,7 +197,7 @@ const Experience = () => {
                   </p>
                 </CardContent>
               </Card>
-              
+
               <Card className="bg-background/50 shadow-sm card-hover">
                 <CardContent className="p-6 flex flex-col items-center text-center">
                   <div className="bg-primary/20 p-3 rounded-full mb-4">
